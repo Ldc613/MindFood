@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吃什么 - 首页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="food-bg">
+    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <header class="mb-7 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <a href="/" class="flex items-center gap-3">
+                <img src="{{ url_for('static', filename='assets/restaurant-marker.svg') }}" alt="" class="brand-mark h-14 w-14 rounded-lg bg-white p-1">
+                <div>
+                    <p class="text-sm font-semibold text-orange-700">校园饭点助手</p>
+                    <h1 class="text-3xl font-black tracking-normal sm:text-4xl">吃什么</h1>
+                    <p class="mt-1 text-sm text-stone-600">饭堂、外卖、随机推荐，一口气安排好。</p>
+                </div>
+            </a>
+            <nav class="flex gap-2">
+                <a class="nav-link nav-link-active" href="/">首页</a>
+                <a class="nav-link" href="/favorites">收藏</a>
+            </nav>
+        </header>
+
+        <section class="source-switch mb-4">
+            <button class="source-tab is-active" data-source="">
+                <span class="mb-1 block text-xs font-bold uppercase tracking-wide">All</span>
+                <strong class="block text-lg">全部</strong>
+                <span class="mt-1 block text-sm">饭堂和外卖一起看</span>
+            </button>
+            <button class="source-tab" data-source="canteen">
+                <span class="mb-1 block text-xs font-bold uppercase tracking-wide">Canteen</span>
+                <strong class="block text-lg">饭堂</strong>
+                <span class="mt-1 block text-sm">按食堂和窗口推荐</span>
+            </button>
+            <button class="source-tab" data-source="takeout">
+                <span class="mb-1 block text-xs font-bold uppercase tracking-wide">Takeout</span>
+                <strong class="block text-lg">外卖</strong>
+                <span class="mt-1 block text-sm">按店铺和送达时间推荐</span>
+            </button>
+        </section>
+
+        <section class="soft-panel mb-5 p-4 sm:p-5">
+            <div class="grid gap-3 md:grid-cols-[1.3fr_1fr_1fr_auto] md:items-end">
+                <label class="grid gap-2 text-sm font-bold text-stone-700">
+                    搜索
+                    <input id="searchInput" class="filter-select" type="search" placeholder="搜索店铺名称或菜系">
+                </label>
+                <label class="grid gap-2 text-sm font-bold text-stone-700">
+                    菜系
+                    <select id="cuisineFilter" class="filter-select">
+                        <option value="">全部菜系</option>
+                    </select>
+                </label>
+                <label class="grid gap-2 text-sm font-bold text-stone-700">
+                    价格
+                    <select id="priceFilter" class="filter-select">
+                        <option value="">全部价格</option>
+                    </select>
+                </label>
+                <button id="randomBtn" class="primary-action">
+                    随机推荐
+                </button>
+            </div>
+            <fieldset class="mt-4 border-t border-orange-100 pt-4">
+                <legend class="mb-3 text-sm font-bold text-stone-700">饮食忌口</legend>
+                <div id="dietFilterList" class="diet-options"></div>
+            </fieldset>
+        </section>
+
+        <div id="errorBox" class="mb-4 hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"></div>
+        <div id="loadingBox" class="soft-panel mb-4 hidden px-4 py-4 text-sm text-stone-600">
+            <span class="loading-spinner mr-2 inline-block align-middle"></span>加载中
+        </div>
+
+        <section id="randomSection" class="mb-7 hidden">
+            <div class="mb-3 flex items-center justify-between gap-3">
+                <h2 class="section-title">本次推荐</h2>
+                <span class="text-sm font-medium text-stone-500">随机返回 1-3 家</span>
+            </div>
+            <div id="randomList" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </section>
+
+        <section>
+            <div class="mb-3 flex items-center justify-between gap-3">
+                <h2 id="sourceTitle" class="section-title">全部餐馆</h2>
+                <div class="flex flex-wrap items-center justify-end gap-2">
+                    <button id="blockedManageBtn" class="blocked-manage-button" type="button">已屏蔽 0</button>
+                    <span id="restaurantCount" class="rounded-full bg-white px-3 py-1 text-sm font-bold text-stone-500 shadow-sm">0 家</span>
+                </div>
+            </div>
+            <div id="blockedPanel" class="blocked-panel mb-4 hidden">
+                <div class="mb-3 flex items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-base font-black">不感兴趣的店铺</h3>
+                        <p class="mt-1 text-sm text-stone-500">取消屏蔽后，这些店铺会重新出现在列表和推荐里。</p>
+                    </div>
+                    <button id="closeBlockedPanelBtn" class="text-sm font-bold text-orange-700" type="button">收起</button>
+                </div>
+                <div id="blockedList" class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </div>
+            <div id="restaurantList" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+            <nav id="paginationBox" class="mt-6 flex flex-wrap items-center justify-center gap-2" aria-label="餐馆列表分页"></nav>
+        </section>
+    </main>
+
+    <script type="module" src="{{ url_for('static', filename='js/pages/home.js') }}"></script>
+</body>
+</html>

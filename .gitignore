@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.DS_Store
+server.log
+server.err
+.pytest_cache/
+*.log
+
+# 本地运行生成的 SQLite 数据库，仓库里保留初始化脚本和 SQL 示例即可。
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
+# 本地演示工具，例如 ngrok 独立版。
+tools/

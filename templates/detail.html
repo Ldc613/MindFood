@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>餐馆详情 - 吃什么</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="food-bg" data-restaurant-id="{{ restaurant_id }}">
+    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <header class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap gap-2">
+                <button id="backBtn" class="nav-link" type="button">返回上一页</button>
+                <a href="/" class="nav-link">首页</a>
+            </div>
+            <a href="/favorites" class="nav-link">我的收藏</a>
+        </header>
+
+        <div id="errorBox" class="mb-4 hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"></div>
+        <div id="loadingBox" class="soft-panel mb-4 px-4 py-4 text-sm text-stone-600">
+            <span class="loading-spinner mr-2 inline-block align-middle"></span>加载详情中
+        </div>
+
+        <article id="detailSkeleton" class="detail-shell hidden overflow-hidden">
+            <div class="detail-layout">
+                <div class="detail-hero-skeleton skeleton-block"></div>
+                <div class="p-5 sm:p-7">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div class="flex-1">
+                            <div class="skeleton-line short"></div>
+                            <div class="mt-3 skeleton-line medium"></div>
+                            <div class="mt-2 skeleton-line long"></div>
+                        </div>
+                        <div class="skeleton-pill"></div>
+                    </div>
+                    <div class="detail-meta mt-6">
+                        <div class="detail-meta-cell"><div class="skeleton-line tiny"></div><div class="mt-2 skeleton-line short"></div></div>
+                        <div class="detail-meta-cell"><div class="skeleton-line tiny"></div><div class="mt-2 skeleton-line short"></div></div>
+                        <div class="detail-meta-cell"><div class="skeleton-line tiny"></div><div class="mt-2 skeleton-line short"></div></div>
+                        <div class="detail-meta-cell"><div class="skeleton-line tiny"></div><div class="mt-2 skeleton-line short"></div></div>
+                        <div class="detail-meta-cell"><div class="skeleton-line tiny"></div><div class="mt-2 skeleton-line short"></div></div>
+                        <div class="detail-meta-cell"><div class="skeleton-line tiny"></div><div class="mt-2 skeleton-line short"></div></div>
+                    </div>
+                    <div class="mt-6">
+                        <div class="skeleton-line medium"></div>
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <span class="skeleton-chip"></span>
+                            <span class="skeleton-chip"></span>
+                            <span class="skeleton-chip"></span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <div class="skeleton-line medium"></div>
+                        <div class="mt-3 skeleton-review"></div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="detailBox" class="detail-shell hidden overflow-hidden">
+            <div class="detail-layout">
+                <div class="detail-visual">
+                    <img id="restaurantImage" class="detail-image" src="" alt="">
+                    <div class="detail-visual-overlay">
+                        <span id="restaurantSourceBadge" class="badge badge-source-canteen"></span>
+                        <span id="restaurantQuickInfo" class="detail-visual-note"></span>
+                    </div>
+                </div>
+                <div class="detail-content p-5 sm:p-7">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div class="flex-1">
+                            <p class="detail-eyebrow">餐馆详情</p>
+                            <h1 id="restaurantName" class="mt-1 text-3xl font-black tracking-normal sm:text-4xl"></h1>
+                            <p id="restaurantAddress" class="mt-3 text-stone-600"></p>
+                        </div>
+                        <button id="favoriteBtn" class="primary-action min-w-28">
+                            收藏
+                        </button>
+                    </div>
+
+                    <div class="detail-meta mt-6 sm:grid-cols-2 xl:grid-cols-3">
+                        <div class="detail-meta-cell">
+                            <p class="text-sm font-medium text-stone-500">类型</p>
+                            <p id="restaurantSource" class="mt-1 text-lg font-bold"></p>
+                        </div>
+                        <div class="detail-meta-cell">
+                            <p class="text-sm font-medium text-stone-500">菜系</p>
+                            <p id="restaurantCuisine" class="mt-1 text-lg font-bold"></p>
+                        </div>
+                        <div class="detail-meta-cell">
+                            <p class="text-sm font-medium text-stone-500">价格区间</p>
+                            <p id="restaurantPrice" class="mt-1 text-lg font-bold"></p>
+                        </div>
+                        <div class="detail-meta-cell">
+                            <p class="text-sm font-medium text-stone-500">人均消费</p>
+                            <p id="restaurantAvgSpend" class="mt-1 text-lg font-bold"></p>
+                        </div>
+                        <div class="detail-meta-cell">
+                            <p class="text-sm font-medium text-stone-500">营业时间</p>
+                            <p id="restaurantOpeningHours" class="mt-1 text-lg font-bold"></p>
+                        </div>
+                        <div class="detail-meta-cell">
+                            <p class="text-sm font-medium text-stone-500">评分</p>
+                            <p id="restaurantRating" class="mt-1 text-lg font-bold"></p>
+                        </div>
+                    </div>
+
+                    <section class="mt-6">
+                        <div class="mb-3 flex items-center justify-between">
+                            <h2 class="section-title">招牌菜品</h2>
+                        </div>
+                        <div id="signatureDishesList" class="badge-row"></div>
+                    </section>
+
+                    <section class="mt-6">
+                        <div class="mb-3 flex items-center justify-between">
+                            <h2 class="section-title">用户简评</h2>
+                        </div>
+                        <blockquote id="reviewSummary" class="review-quote"></blockquote>
+                    </section>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <script type="module" src="{{ url_for('static', filename='js/pages/detail.js') }}"></script>
+</body>
+</html>

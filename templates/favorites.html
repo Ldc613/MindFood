@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏 - 吃什么</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="food-bg">
+    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <header class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="text-sm font-bold text-orange-700">Favorite</p>
+                <h1 class="text-3xl font-black tracking-normal sm:text-4xl">我的收藏</h1>
+                <p class="mt-2 text-sm text-stone-600">把想再吃一次的店先留住。</p>
+            </div>
+            <a class="nav-link" href="/">返回首页</a>
+        </header>
+
+        <div id="errorBox" class="mb-4 hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"></div>
+        <div id="loadingBox" class="soft-panel mb-4 px-4 py-4 text-sm text-stone-600">
+            <span class="loading-spinner mr-2 inline-block align-middle"></span>加载收藏中
+        </div>
+
+        <div id="emptyBox" class="empty-panel hidden">
+            还没有收藏餐馆，可以先去首页挑一家。
+        </div>
+        <div id="favoriteList" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </main>
+
+    <script type="module" src="{{ url_for('static', filename='js/pages/favorites.js') }}"></script>
+</body>
+</html>
